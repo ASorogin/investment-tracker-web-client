@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# Investment Tracker Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack application for tracking investments with role-based access control.
 
-## Available Scripts
+## Features
+- Role-based authentication (Admin, Subscriber, User)
+- Investment portfolio management
+- Real-time analytics
+- User management system
 
-In the project directory, you can run:
+## Setup
 
-### `npm start`
+### Server Setup
+```bash
+# Clone the repository
+git clone https://github.com/ASorogin/investment-tracker-web-server.git
+cd investment-tracker-web-server
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Install dependencies
+npm install
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Create .env file
+echo "MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret
+PORT=5000" > .env
 
-### `npm test`
+# Start server
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Client Setup
+```bash
+# Clone the repository
+git clone https://github.com/ASorogin/investment-tracker-web-client.git
+cd investment-tracker-web-client
 
-### `npm run build`
+# Install dependencies
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Start client
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Test Data Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create test users using curl commands:
 
-### `npm run eject`
+```bash
+# Create Admin User
+curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d "{\"name\":\"Test Admin\",\"email\":\"admin@example.com\",\"password\":\"123456\",\"role\":\"admin\"}"
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Create Subscriber
+curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d "{\"name\":\"Test Subscriber\",\"email\":\"subscriber@example.com\",\"password\":\"123456\",\"role\":\"subscriber\"}"
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Create Regular User
+curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d "{\"name\":\"Test User\",\"email\":\"user@example.com\",\"password\":\"123456\",\"role\":\"user\"}"
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Test Accounts
+```json
+{
+  "admin": {
+    "email": "admin@example.com",
+    "password": "123456"
+  },
+  "subscriber": {
+    "email": "subscriber@example.com",
+    "password": "123456"
+  },
+  "user": {
+    "email": "user@example.com",
+    "password": "123456"
+  }
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Create Test Investments
 
-## Learn More
+```bash
+# Get admin token (save the token from response)
+curl -X POST http://localhost:5000/api/auth/login -H "Content-Type: application/json" -d "{\"email\":\"admin@example.com\",\"password\":\"123456\"}"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Create investment (replace [TOKEN] with the token from login)
+curl -X POST http://localhost:5000/api/investments -H "Authorization: Bearer [TOKEN]" -H "Content-Type: application/json" -d "{\"symbol\":\"AAPL\",\"assetType\":\"stocks\",\"amount\":100,\"purchasePrice\":150,\"currentPrice\":175,\"status\":\"active\",\"notes\":\"Apple stock investment\"}"
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Features by Role
 
-### Code Splitting
+### Admin
+- Full system statistics
+- User management
+- Investment management
+- Analytics access
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Subscriber
+- Investment tracking
+- Advanced analytics
+- Portfolio management
 
-### Analyzing the Bundle Size
+### Regular User
+- Basic investment tracking
+- Portfolio management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API Endpoints
 
-### Making a Progressive Web App
+### Auth Routes
+- POST `/api/auth/register` - Register new user
+- POST `/api/auth/login` - User login
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Investment Routes
+- GET `/api/investments` - Get all investments
+- POST `/api/investments` - Create investment
+- PUT `/api/investments/:id` - Update investment
+- DELETE `/api/investments/:id` - Delete investment
 
-### Advanced Configuration
+### Admin Routes
+- GET `/api/admin/stats` - System statistics
+- GET `/api/admin/users` - List all users
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Subscriber Routes
+- GET `/api/subscriber/tracking` - Get tracking statistics
 
-### Deployment
+## Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Commit changes
+4. Push to the branch
+5. Create a Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License
+MIT
