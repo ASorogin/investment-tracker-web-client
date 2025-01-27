@@ -1,0 +1,36 @@
+
+.profile-container {
+ max-width: 600px;
+ margin: 20px auto;
+ padding: 20px;
+ background: white;
+ border-radius: 8px;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-title {
+ font-size: 24px;
+ font-weight: bold;
+ margin-bottom: 20px;
+}
+
+.profile-info {
+ margin-top: 20px;
+}
+
+.info-item {
+ display: flex;
+ margin: 15px 0;
+ padding: 10px;
+ border-bottom: 1px solid #eee;
+}
+
+.info-item label {
+ width: 120px;
+ font-weight: 500;
+ color: #666;
+}
+
+.info-item span {
+ flex: 1;
+}
